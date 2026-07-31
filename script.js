@@ -1,7 +1,8 @@
 /* ==========================================================================
    Modern Developer Portfolio - JavaScript Logic
    Includes: Web Audio Guitar Synthesizer, HTML5 Canvas Studio,
-   Interactive Filtering, Smooth Scroll, and Animation Observers
+   Art Category Filters (Sketches, Hand Embroidery, Mehndi, Resin Art),
+   Lightboxes, Interactive Filtering, Smooth Scroll, and Animation Observers
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initTypingEffect();
   initGuitarSynth();
   initCanvasStudio();
+  initArtFilters();
+  initArtModal();
   initProjectFilters();
   initScrollAnimations();
   initSkillBars();
@@ -56,9 +59,11 @@ function initTypingEffect() {
 
   const phrases = [
     'Software Engineer (1+ Yrs)',
-    'Frontend & Web Craftsman',
-    'Guitar Enthusiast & Player 🎸',
-    'Digital Art & Sketch Lover 🎨'
+    'Creative Sketch Artist 🎨',
+    'Hand Embroidery Designer 🧵',
+    'Mehndi Art Specialist 🌿',
+    'Resin Craft Artisan 💎',
+    'Guitarist & Player 🎸'
   ];
 
   let phraseIdx = 0;
@@ -81,7 +86,7 @@ function initTypingEffect() {
 
     if (!isDeleting && charIdx === currentPhrase.length) {
       isDeleting = true;
-      typingSpeed = 1800; // Pause at end
+      typingSpeed = 1800;
     } else if (isDeleting && charIdx === 0) {
       isDeleting = false;
       phraseIdx = (phraseIdx + 1) % phrases.length;
@@ -94,6 +99,76 @@ function initTypingEffect() {
   type();
 }
 
+/* --- Art & Craft Category Filter --- */
+function initArtFilters() {
+  const artTabBtns = document.querySelectorAll('.art-tab-btn');
+  const artCards = document.querySelectorAll('.art-card');
+
+  artTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      artTabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filterValue = btn.getAttribute('data-art-filter');
+
+      artCards.forEach(card => {
+        const category = card.getAttribute('data-art-category');
+
+        if (filterValue === 'all' || category === filterValue) {
+          card.style.display = 'flex';
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+          }, 50);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  });
+}
+
+/* --- Artwork Lightbox Modal --- */
+function initArtModal() {
+  const artCards = document.querySelectorAll('.art-card[data-img]');
+  const modal = document.getElementById('artModal');
+  if (!modal) return;
+
+  const modalImg = document.getElementById('modalArtImg');
+  const modalTitle = document.getElementById('modalArtTitle');
+  const modalCategory = document.getElementById('modalArtCategory');
+  const modalDesc = document.getElementById('modalArtDesc');
+  const closeBtn = document.querySelector('.art-modal-close');
+
+  artCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const imgSrc = card.getAttribute('data-img');
+      const title = card.getAttribute('data-title');
+      const category = card.getAttribute('data-category-name');
+      const desc = card.getAttribute('data-desc');
+
+      if (modalImg) modalImg.src = imgSrc;
+      if (modalTitle) modalTitle.textContent = title;
+      if (modalCategory) modalCategory.textContent = category;
+      if (modalDesc) modalDesc.textContent = desc;
+
+      modal.classList.add('open');
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+  }
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+}
+
 /* --- Web Audio API Guitar Synthesizer Studio --- */
 function initGuitarSynth() {
   const guitarStrings = document.querySelectorAll('.guitar-string');
@@ -101,11 +176,9 @@ function initGuitarSynth() {
   const audioBars = document.querySelectorAll('.audio-bar');
   const nowPlayingLabel = document.getElementById('nowPlayingNote');
 
-  // String fundamental frequencies (E2, A2, D3, G3, B3, E4)
   const stringFreqs = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63];
   const stringNames = ['E2 (Low E)', 'A2', 'D3', 'G3', 'B3', 'E4 (High E)'];
 
-  // Lazy initialize AudioContext on user interaction to comply with browser autoplay policies
   let audioCtx = null;
 
   function getAudioContext() {
@@ -118,23 +191,19 @@ function initGuitarSynth() {
     return audioCtx;
   }
 
-  // Synthesize acoustic guitar string pluck sound using Web Audio API
   function pluckString(freq, stringIndex = 0) {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
 
-    // Main Oscillator (Fundamental tone)
     const osc = ctx.createOscillator();
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(freq, now);
 
-    // Harmonic Overtones for rich acoustic wood resonance
     const harmonic = ctx.createOscillator();
     harmonic.type = 'sine';
     harmonic.frequency.setValueAtTime(freq * 2, now);
 
-    // Pluck noise attack transient (simulating guitar pick pluck)
-    const bufferSize = ctx.sampleRate * 0.02; // 20ms burst
+    const bufferSize = ctx.sampleRate * 0.02;
     const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -154,12 +223,10 @@ function initGuitarSynth() {
     noise.connect(noiseFilter);
     noiseFilter.connect(noiseGain);
 
-    // Main Gain Envelope (Exponential decay like real string vibration)
     const gainNode = ctx.createGain();
     gainNode.gain.setValueAtTime(0.4, now);
     gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
 
-    // Subtle low-pass filter to soften string sound over decay time
     const filter = ctx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(3000, now);
@@ -178,7 +245,6 @@ function initGuitarSynth() {
     osc.stop(now + 2.3);
     harmonic.stop(now + 2.3);
 
-    // Visual feedback
     triggerAudioVisualizer();
     if (guitarStrings[stringIndex]) {
       guitarStrings[stringIndex].classList.add('pluck');
@@ -186,7 +252,6 @@ function initGuitarSynth() {
     }
   }
 
-  // String click & hover pluck handlers
   guitarStrings.forEach((strEl, idx) => {
     strEl.addEventListener('mouseenter', (e) => {
       if (e.buttons === 1 || e.buttons === 0) {
@@ -201,14 +266,13 @@ function initGuitarSynth() {
     });
   });
 
-  // Acoustic Guitar Chord Presets
   const chords = {
-    'C': [130.81, 164.81, 196.00, 261.63, 329.63], // C, E, G, C, E
-    'G': [98.00, 123.47, 146.83, 196.00, 293.66, 392.00], // G, B, D, G, D, G
-    'Am': [110.00, 164.81, 220.00, 261.63, 329.63], // A, E, A, C, E
-    'F': [87.31, 130.81, 174.61, 220.00, 261.63, 349.23], // F, C, F, A, C, F
-    'D': [146.83, 220.00, 293.66, 369.99], // D, A, D, F#
-    'Em': [82.41, 123.47, 164.81, 196.00, 246.94, 329.63] // E, B, E, G, B, E
+    'C': [130.81, 164.81, 196.00, 261.63, 329.63],
+    'G': [98.00, 123.47, 146.83, 196.00, 293.66, 392.00],
+    'Am': [110.00, 164.81, 220.00, 261.63, 329.63],
+    'F': [87.31, 130.81, 174.61, 220.00, 261.63, 349.23],
+    'D': [146.83, 220.00, 293.66, 369.99],
+    'Em': [82.41, 123.47, 164.81, 196.00, 246.94, 329.63]
   };
 
   chordBtns.forEach(btn => {
@@ -221,12 +285,9 @@ function initGuitarSynth() {
 
       if (nowPlayingLabel) nowPlayingLabel.textContent = `Strumming Chord: ${chordName} Major`;
 
-      // Arpeggiate chord with realistic strum timing offset (25ms per string)
       if (freqs) {
         freqs.forEach((f, index) => {
-          setTimeout(() => {
-            pluckString(f, index % 6);
-          }, index * 35);
+          setTimeout(() => pluckString(f, index % 6), index * 35);
         });
       }
     });
@@ -263,7 +324,6 @@ function initCanvasStudio() {
   let lastX = 0;
   let lastY = 0;
 
-  // Set crisp high-DPI canvas dimensions
   function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width;
@@ -271,22 +331,18 @@ function initCanvasStudio() {
     drawSampleSketch();
   }
 
-  // Draw initial sample art sketch on canvas startup
   function drawSampleSketch() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Ambient dark backdrop
     ctx.fillStyle = '#0d0f17';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Initial neon guitar & constellation line art
     ctx.save();
     ctx.lineWidth = 2;
     ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
     ctx.shadowBlur = 12;
     ctx.shadowColor = '#00f2fe';
 
-    // Constellation / Guitar body outline preview
     ctx.beginPath();
     ctx.arc(canvas.width * 0.35, canvas.height * 0.5, 60, 0, Math.PI * 2);
     ctx.stroke();
@@ -295,7 +351,6 @@ function initCanvasStudio() {
     ctx.arc(canvas.width * 0.65, canvas.height * 0.5, 80, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Connecting neon lines
     ctx.strokeStyle = 'rgba(157, 78, 221, 0.5)';
     ctx.shadowColor = '#9d4edd';
     ctx.beginPath();
@@ -303,19 +358,17 @@ function initCanvasStudio() {
     ctx.lineTo(canvas.width * 0.85, canvas.height * 0.5);
     ctx.stroke();
 
-    // Welcome sketch text
     ctx.shadowBlur = 0;
     ctx.fillStyle = 'rgba(241, 245, 249, 0.6)';
     ctx.font = '13px "Fira Code", monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('✨ Interactive Canvas - Draw or Sketch Here!', canvas.width / 2, canvas.height * 0.85);
+    ctx.fillText('✨ Interactive Canvas Studio - Draw Your Sketch Here!', canvas.width / 2, canvas.height * 0.85);
     ctx.restore();
   }
 
   window.addEventListener('resize', resizeCanvas);
   setTimeout(resizeCanvas, 100);
 
-  // Drawing event handlers
   function startDrawing(e) {
     isDrawing = true;
     const pos = getPos(e);
@@ -350,9 +403,7 @@ function initCanvasStudio() {
     lastY = pos.y;
   }
 
-  function stopDrawing() {
-    isDrawing = false;
-  }
+  function stopDrawing() { isDrawing = false; }
 
   function getPos(e) {
     const rect = canvas.getBoundingClientRect();
@@ -373,7 +424,6 @@ function initCanvasStudio() {
   canvas.addEventListener('touchmove', draw);
   canvas.addEventListener('touchend', stopDrawing);
 
-  // Color Swatch selector
   swatches.forEach(swatch => {
     swatch.addEventListener('click', () => {
       swatches.forEach(s => s.classList.remove('active'));
@@ -385,7 +435,6 @@ function initCanvasStudio() {
     });
   });
 
-  // Brush Slider
   if (brushSlider) {
     brushSlider.addEventListener('input', (e) => {
       currentSize = e.target.value;
@@ -393,7 +442,6 @@ function initCanvasStudio() {
     });
   }
 
-  // Tool buttons
   toolBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       toolBtns.forEach(b => b.classList.remove('active'));
@@ -402,7 +450,6 @@ function initCanvasStudio() {
     });
   });
 
-  // Clear Canvas
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       ctx.fillStyle = '#0d0f17';
@@ -411,7 +458,6 @@ function initCanvasStudio() {
     });
   }
 
-  // Save Canvas PNG Download
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
       const imageURL = canvas.toDataURL('image/png');
@@ -473,14 +519,13 @@ function initScrollAnimations() {
     });
   }, observerOptions);
 
-  document.querySelectorAll('.glass-card, .timeline-item, .project-card, .skill-category-card').forEach(el => {
+  document.querySelectorAll('.glass-card, .timeline-item, .project-card, .art-card, .skill-category-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(25px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
   });
 
-  // Inject CSS rule for revealed class dynamically
   const style = document.createElement('style');
   style.textContent = `
     .revealed {
