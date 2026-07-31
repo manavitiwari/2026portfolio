@@ -1,15 +1,14 @@
 #!/bin/bash
 # ==============================================================================
-# Helper Script to Push Portfolio Code to GitHub
-# Usage: ./push_to_github.sh [github-username] [repo-name]
+# Push Portfolio Code to GitHub Repository (Default: 2026)
 # ==============================================================================
 
 set -e
 
-USERNAME=$1
-REPO_NAME=$2
+USERNAME=${1:-"manavitiwari"}
+REPO_NAME=${2:-"2026"}
 
-echo "🚀 Setting up Git tracking & GitHub deployment..."
+echo "🚀 Preparing Git deployment for GitHub repository '$USERNAME/$REPO_NAME'..."
 
 # Initialize git if not already initialized
 if [ ! -d ".git" ]; then
@@ -21,33 +20,23 @@ fi
 git add .
 echo "✅ Staged all project files."
 
-# Commit changes
+# Commit changes if any
 if git diff-index --quiet HEAD -- 2>/dev/null; then
-  echo "ℹ️ No changes to commit."
+  echo "ℹ️ No uncommitted changes."
 else
-  git commit -m "feat: portfolio update with 1+ year experience, sketch drawing canvas, and guitar synth"
+  git commit -m "feat: updated 2026 portfolio with 1+ year exp, sketch drawing canvas, and guitar synth"
   echo "✅ Created Git commit."
 fi
 
-# Rename default branch to main
+# Set main branch
 git branch -M main
 
-# If parameters provided, add remote and push
-if [ -n "$USERNAME" ] && [ -n "$REPO_NAME" ]; then
-  REMOTE_URL="https://github.com/$USERNAME/$REPO_NAME.git"
-  echo "🔗 Setting remote origin to $REMOTE_URL..."
-  git remote remove origin 2>/dev/null || true
-  git remote add origin "$REMOTE_URL"
-  echo "⬆️ Pushing code to GitHub repository..."
-  git push -u origin main
-  echo "🎉 Success! Your code is updated on GitHub at $REMOTE_URL"
-else
-  echo ""
-  echo "----------------------------------------------------------------------"
-  echo "📌 Next Steps to Update Code to Your GitHub Account:"
-  echo "1. Create a repository on GitHub (e.g. 'portfolio' or 'my-portfolio')."
-  echo "2. Run this command in your terminal:"
-  echo "   ./push_to_github.sh <your-github-username> <repo-name>"
-  echo "   Example: ./push_to_github.sh manavitiwari my-portfolio"
-  echo "----------------------------------------------------------------------"
-fi
+REMOTE_URL="https://github.com/$USERNAME/$REPO_NAME.git"
+echo "🔗 Remote Origin URL set to: $REMOTE_URL"
+git remote remove origin 2>/dev/null || true
+git remote add origin "$REMOTE_URL"
+
+echo "⬆️ Pushing code to GitHub..."
+git push -u origin main
+
+echo "🎉 Success! All code updated on GitHub at $REMOTE_URL"
