@@ -45,6 +45,9 @@
       </ul>
 
       <div class="nav-actions">
+        <button id="openUploadBtnHeader" class="btn btn-accent btn-sm">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Upload Sketch
+        </button>
         <a href="#contact" class="btn btn-secondary btn-sm">Get in Touch</a>
         <button class="mobile-toggle" aria-label="Toggle navigation menu">
           <i class="fa-solid fa-bars"></i>
@@ -76,9 +79,9 @@
             <a href="#projects" class="btn btn-primary">
               <i class="fa-solid fa-briefcase"></i> Software Projects
             </a>
-            <a href="#crafts" class="btn btn-accent">
-              <i class="fa-solid fa-palette"></i> Explore Creative Arts
-            </a>
+            <button id="openUploadBtnHero" class="btn btn-accent">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Upload My Sketch / Art
+            </button>
             <a href="#hobbies" class="btn btn-secondary">
               <i class="fa-solid fa-guitar"></i> Play Guitar Live
             </a>
@@ -178,7 +181,16 @@
       <div class="section-header">
         <div class="section-badge"><i class="fa-solid fa-palette"></i> Creative Arts Gallery</div>
         <h2 class="section-title">My Creative <span class="gradient-craft">Art & Craft Collections</span></h2>
-        <p class="section-desc">Explore dedicated galleries for my Sketches, Hand Embroidery, Mehndi Designs, and Resin Art creations.</p>
+        <p class="section-desc">Explore dedicated galleries for my Sketches, Hand Embroidery, Mehndi Designs, and Resin Art creations, or upload your own sketch directly below!</p>
+      </div>
+
+      <!-- Upload Artwork Action Banner -->
+      <div class="upload-banner glass-card" style="margin-bottom: 2.5rem; text-align: center; padding: 1.5rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">📷 Add Your Sketch or Craft Artwork</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Select any sketch, embroidery photo, mehndi image, or resin art from your device gallery to add to this website instantly!</p>
+        <button id="openUploadBtnGallery" class="btn btn-accent">
+          <i class="fa-solid fa-plus-circle"></i> Upload Sketch / Artwork Photo
+        </button>
       </div>
 
       <!-- Category Filter Tabs -->
@@ -190,8 +202,8 @@
         <button class="art-tab-btn" data-art-filter="resin"><i class="fa-solid fa-gem"></i> Resin Art</button>
       </div>
 
-      <!-- Creative Arts Grid -->
-      <div class="art-grid">
+      <!-- Creative Arts Grid Container -->
+      <div id="artGrid" class="art-grid">
 
         <!-- 1. Sketches & Drawing Card -->
         <div class="art-card" data-art-category="sketch" data-img="assets/drawing_artwork.jpg" data-title="Concept Sketchbook & Line Art" data-category-name="Sketches & Drawing" data-desc="Intricate concept art sketches, character line drawings, and digital sketchpad illustrations created with precision pencil & digital brushwork.">
@@ -738,6 +750,48 @@
       </div>
     </div>
   </section>
+
+  <!-- Upload Sketch / Artwork Modal -->
+  <div id="uploadModal" class="art-modal">
+    <div class="art-modal-content" style="max-width: 550px;">
+      <button id="closeUploadModal" class="art-modal-close"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 2rem;">
+        <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-cloud-arrow-up" style="color: var(--accent-cyan);"></i> Upload Sketch to Portfolio</h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">Select an image file from your gallery to post it live into your Creative Arts Gallery!</p>
+
+        <form id="uploadSketchForm" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="form-group">
+            <label for="sketchFileInput">Choose Image from Gallery</label>
+            <input type="file" id="sketchFileInput" class="form-input" accept="image/*" required style="padding: 0.6rem;">
+          </div>
+
+          <div class="form-group">
+            <label for="sketchTitleInput">Artwork Title</label>
+            <input type="text" id="sketchTitleInput" class="form-input" placeholder="e.g. My Handmade Pencil Sketch" required>
+          </div>
+
+          <div class="form-group">
+            <label for="sketchCategorySelect">Craft Category</label>
+            <select id="sketchCategorySelect" class="form-input" style="background: #0a0c12;">
+              <option value="sketch">🎨 Sketches & Drawing</option>
+              <option value="embroidery">🧵 Hand Embroidery</option>
+              <option value="mehndi">🌿 Mehndi / Henna Art</option>
+              <option value="resin">💎 Resin Art</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sketchDescInput">Short Description</label>
+            <input type="text" id="sketchDescInput" class="form-input" placeholder="e.g. Detailed pencil sketch drawn in my sketchbook">
+          </div>
+
+          <button type="submit" class="btn btn-accent" style="margin-top: 0.5rem;">
+            <i class="fa-solid fa-upload"></i> Post Artwork to Website
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!-- Artwork Lightbox Modal -->
   <div id="artModal" class="art-modal">

@@ -2,7 +2,7 @@
    Modern Developer Portfolio - JavaScript Logic
    Includes: Web Audio Guitar Synthesizer, HTML5 Canvas Studio,
    Art Category Filters (Sketches, Hand Embroidery, Mehndi, Resin Art),
-   Lightboxes, Interactive Filtering, Smooth Scroll, and Animation Observers
+   Live Image Gallery Upload Feature, Lightboxes, Smooth Scroll
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvasStudio();
   initArtFilters();
   initArtModal();
+  initUploadSketchModal();
   initProjectFilters();
   initScrollAnimations();
   initSkillBars();
@@ -99,6 +100,110 @@ function initTypingEffect() {
   type();
 }
 
+/* --- Live Upload Sketch / Artwork Feature --- */
+function initUploadSketchModal() {
+  const modal = document.getElementById('uploadModal');
+  const openBtns = [
+    document.getElementById('openUploadBtnHeader'),
+    document.getElementById('openUploadBtnHero'),
+    document.getElementById('openUploadBtnGallery')
+  ];
+  const closeBtn = document.getElementById('closeUploadModal');
+  const uploadForm = document.getElementById('uploadSketchForm');
+  const artGrid = document.getElementById('artGrid');
+
+  openBtns.forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', () => {
+        if (modal) modal.classList.add('open');
+      });
+    }
+  });
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+  }
+
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById('sketchFileInput');
+      const titleInput = document.getElementById('sketchTitleInput').value;
+      const categorySelect = document.getElementById('sketchCategorySelect').value;
+      const descInput = document.getElementById('sketchDescInput').value || 'Handmade sketch artwork posted to portfolio';
+
+      if (!fileInput.files || !fileInput.files[0]) {
+        showToast('⚠️ Please select an image file first.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const imageDataUrl = event.target.result;
+        
+        // Category metadata mapping
+        const categoryMap = {
+          'sketch': { name: 'Sketches & Drawing', icon: 'fa-pencil' },
+          'embroidery': { name: 'Hand Embroidery', icon: 'fa-scissors' },
+          'mehndi': { name: 'Mehndi / Henna Art', icon: 'fa-spa' },
+          'resin': { name: 'Resin Art', icon: 'fa-gem' }
+        };
+
+        const catInfo = categoryMap[categorySelect] || categoryMap['sketch'];
+
+        // Create new art card dynamically
+        const newCard = document.createElement('div');
+        newCard.className = 'art-card revealed';
+        newCard.setAttribute('data-art-category', categorySelect);
+        newCard.setAttribute('data-img', imageDataUrl);
+        newCard.setAttribute('data-title', titleInput);
+        newCard.setAttribute('data-category-name', catInfo.name);
+        newCard.setAttribute('data-desc', descInput);
+
+        newCard.innerHTML = `
+          <div class="art-img-wrapper">
+            <img src="${imageDataUrl}" alt="${titleInput}" class="art-img">
+            <div class="art-overlay">
+              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Detail</span>
+            </div>
+          </div>
+          <div class="art-body">
+            <span class="art-category-label"><i class="fa-solid ${catInfo.icon}"></i> ${catInfo.name}</span>
+            <h3 class="art-title">${titleInput}</h3>
+            <p class="art-desc">${descInput}</p>
+            <div class="tech-tags">
+              <span class="tag">Uploaded Sketch</span>
+              <span class="tag">Original Art</span>
+            </div>
+          </div>
+        `;
+
+        if (artGrid) {
+          artGrid.prepend(newCard);
+        }
+
+        // Re-attach modal lightbox listener to the new card
+        initSingleArtCardModal(newCard);
+
+        uploadForm.reset();
+        modal.classList.remove('open');
+        showToast('✨ Sketch uploaded & posted to your portfolio gallery!');
+
+        // Scroll smoothly to gallery
+        const craftsSec = document.getElementById('crafts');
+        if (craftsSec) craftsSec.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+}
+
 /* --- Art & Craft Category Filter --- */
 function initArtFilters() {
   const artTabBtns = document.querySelectorAll('.art-tab-btn');
@@ -110,8 +215,9 @@ function initArtFilters() {
       btn.classList.add('active');
 
       const filterValue = btn.getAttribute('data-art-filter');
+      const allCards = document.querySelectorAll('.art-card');
 
-      artCards.forEach(card => {
+      allCards.forEach(card => {
         const category = card.getAttribute('data-art-category');
 
         if (filterValue === 'all' || category === filterValue) {
@@ -135,6 +241,20 @@ function initArtFilters() {
 /* --- Artwork Lightbox Modal --- */
 function initArtModal() {
   const artCards = document.querySelectorAll('.art-card[data-img]');
+  artCards.forEach(card => initSingleArtCardModal(card));
+
+  const modal = document.getElementById('artModal');
+  const closeBtn = document.querySelector('.art-modal-close');
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+  }
+}
+
+function initSingleArtCardModal(card) {
   const modal = document.getElementById('artModal');
   if (!modal) return;
 
@@ -142,30 +262,19 @@ function initArtModal() {
   const modalTitle = document.getElementById('modalArtTitle');
   const modalCategory = document.getElementById('modalArtCategory');
   const modalDesc = document.getElementById('modalArtDesc');
-  const closeBtn = document.querySelector('.art-modal-close');
 
-  artCards.forEach(card => {
-    card.addEventListener('click', () => {
-      const imgSrc = card.getAttribute('data-img');
-      const title = card.getAttribute('data-title');
-      const category = card.getAttribute('data-category-name');
-      const desc = card.getAttribute('data-desc');
+  card.addEventListener('click', () => {
+    const imgSrc = card.getAttribute('data-img');
+    const title = card.getAttribute('data-title');
+    const category = card.getAttribute('data-category-name');
+    const desc = card.getAttribute('data-desc');
 
-      if (modalImg) modalImg.src = imgSrc;
-      if (modalTitle) modalTitle.textContent = title;
-      if (modalCategory) modalCategory.textContent = category;
-      if (modalDesc) modalDesc.textContent = desc;
+    if (modalImg) modalImg.src = imgSrc;
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalCategory) modalCategory.textContent = category;
+    if (modalDesc) modalDesc.textContent = desc;
 
-      modal.classList.add('open');
-    });
-  });
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
-  }
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('open');
+    modal.classList.add('open');
   });
 }
 
