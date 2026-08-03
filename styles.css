@@ -9,28 +9,28 @@
 
 /* --- Design Tokens & Variables --- */
 :root {
-  --bg-primary: #08090e;
-  --bg-secondary: #0f111a;
-  --bg-card: rgba(20, 24, 38, 0.65);
-  --bg-card-hover: rgba(30, 36, 58, 0.85);
+  --bg-primary: #090d16;
+  --bg-secondary: #0d1322;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-hover: rgba(30, 41, 59, 0.9);
   --bg-glass: rgba(255, 255, 255, 0.03);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(0, 242, 254, 0.3);
+  --border-glass: rgba(59, 130, 246, 0.18);
+  --border-glow: rgba(59, 130, 246, 0.4);
   
-  --accent-cyan: #00f2fe;
-  --accent-purple: #9d4edd;
-  --accent-pink: #ff2a85;
-  --accent-gold: #ffb703;
-  --accent-green: #00f5d4;
-  --accent-rose: #e63946;
-  --accent-amber: #f4a261;
+  --accent-cyan: #3b82f6;      /* Main Warm Sapphire Blue */
+  --accent-purple: #2563eb;    /* Deep Royal Blue */
+  --accent-pink: #60a5fa;      /* Light Warm Sky Blue */
+  --accent-gold: #93c5fd;      /* Warm Ice Blue Accent */
+  --accent-green: #38bdf8;     /* Soft Bright Aqua Blue */
+  --accent-rose: #3b82f6;
+  --accent-amber: #60a5fa;
 
-  --gradient-hero: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #00c6ff 100%);
-  --gradient-neon: linear-gradient(135deg, #00f2fe 0%, #9d4edd 50%, #ff2a85 100%);
-  --gradient-craft: linear-gradient(135deg, #ff2a85 0%, #ffb703 50%, #00f5d4 100%);
-  --gradient-guitar: linear-gradient(135deg, #ff9e00, #ff007f);
+  --gradient-hero: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
+  --gradient-neon: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #1e40af 100%);
+  --gradient-craft: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+  --gradient-guitar: linear-gradient(135deg, #3b82f6, #1d4ed8);
 
-  --text-main: #f1f5f9;
+  --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
 
@@ -43,10 +43,10 @@
   --radius-lg: 24px;
   --radius-full: 9999px;
 
-  --shadow-glow: 0 0 35px rgba(0, 242, 254, 0.18);
-  --shadow-purple: 0 0 35px rgba(157, 78, 221, 0.2);
-  --shadow-pink: 0 0 35px rgba(255, 42, 133, 0.25);
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 35px rgba(59, 130, 246, 0.2);
+  --shadow-purple: 0 0 35px rgba(37, 99, 235, 0.2);
+  --shadow-pink: 0 0 35px rgba(96, 165, 250, 0.25);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
 
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -86,14 +86,14 @@ body {
   z-index: -2;
   pointer-events: none;
   overflow: hidden;
-  background: radial-gradient(circle at 10% 20%, rgba(15, 17, 26, 1) 0%, rgba(8, 9, 14, 1) 90%);
+  background: radial-gradient(circle at 10% 20%, rgba(13, 19, 34, 1) 0%, rgba(9, 13, 22, 1) 90%);
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(120px);
-  opacity: 0.35;
+  opacity: 0.3;
   animation: orbFloat 22s infinite alternate ease-in-out;
 }
 
@@ -102,7 +102,7 @@ body {
   left: 15%;
   width: 500px;
   height: 500px;
-  background: var(--accent-cyan);
+  background: rgba(59, 130, 246, 0.25);
 }
 
 .orb-2 {
@@ -110,7 +110,7 @@ body {
   right: 5%;
   width: 600px;
   height: 600px;
-  background: var(--accent-purple);
+  background: rgba(37, 99, 235, 0.2);
   animation-delay: -7s;
 }
 
@@ -119,7 +119,7 @@ body {
   left: 35%;
   width: 450px;
   height: 450px;
-  background: var(--accent-pink);
+  background: rgba(96, 165, 250, 0.15);
   animation-delay: -14s;
 }
 
