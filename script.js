@@ -62,7 +62,7 @@ function initTypingEffect() {
     'Software Engineer (1+ Yrs)',
     'Frontend & Web Craftsman',
     'Full-Stack Developer',
-    'UI/UX Craftsman'
+    'Passionate Sketching Artist'
   ];
 
   let phraseIdx = 0;
