@@ -621,7 +621,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .art-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
 }
 
@@ -637,8 +637,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .art-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(255, 42, 133, 0.4);
-  box-shadow: var(--shadow-pink);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: var(--shadow-glow);
 }
 
 .art-img-wrapper {
