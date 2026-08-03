@@ -484,15 +484,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 330px;
   height: 330px;
   border-radius: 50%;
-  padding: 8px;
-  background: var(--gradient-neon);
-  box-shadow: var(--shadow-purple);
-  animation: rotateGlow 15s linear infinite;
-}
-
-@keyframes rotateGlow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
 }
 
 .avatar-img {
@@ -501,7 +495,7 @@ h1, h2, h3, h4, h5, h6 {
   object-fit: cover;
   object-position: center 15%;
   border-radius: 50%;
-  border: 4px solid var(--bg-primary);
+  filter: none;
 }
 
 .badge-float {
