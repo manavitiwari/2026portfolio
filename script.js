@@ -145,6 +145,9 @@ function initArtModal() {
 
   artCards.forEach(card => {
     card.addEventListener('click', () => {
+      card.classList.add('card-rotating');
+      setTimeout(() => card.classList.remove('card-rotating'), 650);
+
       const imgSrc = card.getAttribute('data-img');
       const title = card.getAttribute('data-title');
       const category = card.getAttribute('data-category-name');
