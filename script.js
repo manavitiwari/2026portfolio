@@ -60,7 +60,7 @@ function initTypingEffect() {
 
   const phrases = [
     'Software Engineer (1+ Yrs)',
-    'Frontend & Web Craftsman',
+    'Frontend & Web Developer',
     'Full-Stack Developer',
     'Passionate Sketching Artist'
   ];
