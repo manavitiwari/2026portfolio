@@ -1,12 +1,12 @@
 #!/bin/bash
 # ==============================================================================
-# Push Portfolio Code to GitHub Repository (Default: 2026)
+# Push Portfolio Code to GitHub Repository (Default: 2026portfolio)
 # ==============================================================================
 
 set -e
 
 USERNAME=${1:-"manavitiwari"}
-REPO_NAME=${2:-"2026"}
+REPO_NAME=${2:-"2026portfolio"}
 
 echo "🚀 Preparing Git deployment for GitHub repository '$USERNAME/$REPO_NAME'..."
 
