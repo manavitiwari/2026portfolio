@@ -59,9 +59,10 @@ function initTypingEffect() {
   if (!typedSpan) return;
 
   const phrases = [
+    'Junior Developer & DevRel',
+    'Ojas AI Research Lab',
     'Software Engineer (1+ Yrs)',
     'Frontend & Web Developer',
-    'Full-Stack Developer',
     'Passionate Sketching Artist'
   ];
 
