@@ -132,9 +132,9 @@ function initArtFilters() {
   });
 }
 
-/* --- Artwork Lightbox Modal --- */
+/* --- Artwork Lightbox Modal & One-By-One Sketch Gallery --- */
 function initArtModal() {
-  const artCards = document.querySelectorAll('.art-card[data-img]');
+  const artCards = document.querySelectorAll('.art-card');
   const modal = document.getElementById('artModal');
   if (!modal) return;
 
@@ -143,24 +143,168 @@ function initArtModal() {
   const modalCategory = document.getElementById('modalArtCategory');
   const modalDesc = document.getElementById('modalArtDesc');
   const closeBtn = document.querySelector('.art-modal-close');
+  
+  const prevBtn = document.getElementById('modalPrevBtn');
+  const nextBtn = document.getElementById('modalNextBtn');
+  const counterBox = document.getElementById('modalGalleryCounter');
+  const counterText = document.getElementById('counterText');
+  const nextSketchAction = document.getElementById('nextSketchAction');
+  const nextSketchBtn = document.getElementById('nextSketchBtn');
+  const nextTitleHint = document.getElementById('nextTitleHint');
+  const thumbStrip = document.getElementById('modalThumbStrip');
+
+  // Collection of all 4 hand-drawn pencil & charcoal sketches
+  const sketchCollection = [
+    {
+      img: 'assets/sketch_glasses_framed.jpg?v=3',
+      title: 'Eyeglasses & Lips Pencil Sketch',
+      category: 'Manavi Tiwari Original Sketch (1 of 4)',
+      desc: 'Clean white sketch paper artwork featuring eyes with stylish glasses, lips & signature by Manavi Tiwari.'
+    },
+    {
+      img: 'assets/sketch_crying_framed.jpg?v=3',
+      title: 'Tear & Windblown Hair Charcoal Portrait',
+      category: 'Manavi Tiwari Original Sketch (2 of 4)',
+      desc: 'Framed original photo of dramatic charcoal portrait sketch with tear drop on cheek and flowing hair, signed Manavi.'
+    },
+    {
+      img: 'assets/sketch_hibiscus_framed.jpg?v=3',
+      title: 'Hibiscus Botanical Graphite Sketch',
+      category: 'Manavi Tiwari Original Sketch (3 of 4)',
+      desc: 'Framed original photo of detailed graphite pencil sketch of Hibiscus flowers & leaves, signed Manavi Tiwari.'
+    },
+    {
+      img: 'assets/sketch_sailboat_framed.jpg?v=3',
+      title: 'Moonlight Ocean Sailboat Charcoal Art',
+      category: 'Manavi Tiwari Original Sketch (4 of 4)',
+      desc: 'Framed original photo of dramatic charcoal ocean landscape sketch of a sailboat under full moon & clouds, signed Manavi Dubey.'
+    }
+  ];
+
+  let currentSketchIdx = 0;
+  let isGalleryMode = false;
+
+  function renderThumbnails() {
+    if (!thumbStrip) return;
+    thumbStrip.innerHTML = '';
+    sketchCollection.forEach((item, idx) => {
+      const thumb = document.createElement('img');
+      thumb.src = item.img;
+      thumb.alt = item.title;
+      thumb.className = `modal-thumb ${idx === currentSketchIdx ? 'active' : ''}`;
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentSketchIdx = idx;
+        showSketch(currentSketchIdx);
+      });
+      thumbStrip.appendChild(thumb);
+    });
+  }
+
+  function showSketch(idx) {
+    const item = sketchCollection[idx];
+    if (!item) return;
+
+    if (modalImg) {
+      modalImg.style.opacity = '0.4';
+      modalImg.style.transform = 'scale(0.96)';
+      setTimeout(() => {
+        modalImg.src = item.img;
+        modalImg.style.opacity = '1';
+        modalImg.style.transform = 'scale(1)';
+      }, 150);
+    }
+
+    if (modalTitle) modalTitle.textContent = item.title;
+    if (modalCategory) modalCategory.textContent = item.category;
+    if (modalDesc) modalDesc.textContent = item.desc;
+    if (counterText) counterText.textContent = `Sketch ${idx + 1} of ${sketchCollection.length}`;
+
+    const nextIdx = (idx + 1) % sketchCollection.length;
+    if (nextTitleHint) nextTitleHint.textContent = `(${sketchCollection[nextIdx].title.split(' ')[0]}...)`;
+
+    // Highlight active thumbnail
+    if (thumbStrip) {
+      const thumbs = thumbStrip.querySelectorAll('.modal-thumb');
+      thumbs.forEach((t, i) => {
+        if (i === idx) t.classList.add('active');
+        else t.classList.remove('active');
+      });
+    }
+  }
 
   artCards.forEach(card => {
     card.addEventListener('click', () => {
       card.classList.add('card-rotating');
       setTimeout(() => card.classList.remove('card-rotating'), 650);
 
-      const imgSrc = card.getAttribute('data-img');
-      const title = card.getAttribute('data-title');
-      const category = card.getAttribute('data-category-name');
-      const desc = card.getAttribute('data-desc');
+      const isGallery = card.getAttribute('data-is-gallery') === 'true' || card.getAttribute('data-art-category') === 'sketch';
 
-      if (modalImg) modalImg.src = imgSrc;
-      if (modalTitle) modalTitle.textContent = title;
-      if (modalCategory) modalCategory.textContent = category;
-      if (modalDesc) modalDesc.textContent = desc;
+      if (isGallery) {
+        isGalleryMode = true;
+        currentSketchIdx = 0;
+        
+        if (prevBtn) prevBtn.style.display = 'flex';
+        if (nextBtn) nextBtn.style.display = 'flex';
+        if (counterBox) counterBox.style.display = 'inline-flex';
+        if (nextSketchAction) nextSketchAction.style.display = 'block';
+        if (thumbStrip) thumbStrip.style.display = 'flex';
+
+        renderThumbnails();
+        showSketch(currentSketchIdx);
+      } else {
+        isGalleryMode = false;
+
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (counterBox) counterBox.style.display = 'none';
+        if (nextSketchAction) nextSketchAction.style.display = 'none';
+        if (thumbStrip) thumbStrip.style.display = 'none';
+
+        const imgSrc = card.getAttribute('data-img');
+        const title = card.getAttribute('data-title');
+        const category = card.getAttribute('data-category-name');
+        const desc = card.getAttribute('data-desc');
+
+        if (modalImg) modalImg.src = imgSrc;
+        if (modalTitle) modalTitle.textContent = title;
+        if (modalCategory) modalCategory.textContent = category;
+        if (modalDesc) modalDesc.textContent = desc;
+      }
 
       modal.classList.add('open');
     });
+  });
+
+  function nextSketch() {
+    if (!isGalleryMode) return;
+    currentSketchIdx = (currentSketchIdx + 1) % sketchCollection.length;
+    showSketch(currentSketchIdx);
+  }
+
+  function prevSketch() {
+    if (!isGalleryMode) return;
+    currentSketchIdx = (currentSketchIdx - 1 + sketchCollection.length) % sketchCollection.length;
+    showSketch(currentSketchIdx);
+  }
+
+  if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSketch(); });
+  if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSketch(); });
+  if (nextSketchBtn) nextSketchBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSketch(); });
+  if (modalImg) modalImg.addEventListener('click', () => { if (isGalleryMode) nextSketch(); });
+
+  // Keyboard navigation (Left / Right Arrow Keys)
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('open') || !isGalleryMode) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      nextSketch();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      prevSketch();
+    } else if (e.key === 'Escape') {
+      modal.classList.remove('open');
+    }
   });
 
   if (closeBtn) {
