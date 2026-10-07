@@ -60,6 +60,8 @@ function initTypingEffect() {
 
   const phrases = [
     'Junior Developer & DevRel',
+    'UI/UX & Product Designer',
+    'Figma Design Systems & Wireframing',
     'Ojas AI Research Lab',
     'Software Engineer (1+ Yrs)',
     'Frontend & Web Developer',
