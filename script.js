@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initGuitarSynth();
   initCanvasStudio();
   initArtFilters();
+  initUiuxFilters();
   initArtModal();
   initProjectFilters();
   initScrollAnimations();
@@ -111,10 +112,43 @@ function initArtFilters() {
       btn.classList.add('active');
 
       const filterValue = btn.getAttribute('data-art-filter');
-      const artCards = document.querySelectorAll('.art-card');
+      const artCards = document.querySelectorAll('#artGrid .art-card');
 
       artCards.forEach(card => {
         const category = card.getAttribute('data-art-category');
+
+        if (filterValue === 'all' || category === filterValue) {
+          card.style.display = 'flex';
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+          }, 50);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  });
+}
+
+/* --- Dedicated UI/UX Section Subnav Category Filter --- */
+function initUiuxFilters() {
+  const uiuxTabBtns = document.querySelectorAll('.uiux-tab-btn');
+  const uiuxCards = document.querySelectorAll('.uiux-card');
+
+  uiuxTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      uiuxTabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filterValue = btn.getAttribute('data-uiux-filter');
+
+      uiuxCards.forEach(card => {
+        const category = card.getAttribute('data-uiux-category');
 
         if (filterValue === 'all' || category === filterValue) {
           card.style.display = 'flex';

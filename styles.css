@@ -625,6 +625,153 @@ h1, h2, h3, h4, h5, h6 {
   gap: 2rem;
 }
 
+/* Dedicated UI/UX Design Studio Section Styles */
+.uiux-section {
+  padding: 6rem 0;
+  position: relative;
+  background: linear-gradient(180deg, rgba(8, 9, 14, 0.5) 0%, rgba(13, 16, 26, 0.8) 100%);
+  border-top: 1px solid var(--border-glass);
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.uiux-subnav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+}
+
+.uiux-tab-btn {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.uiux-tab-btn:hover, .uiux-tab-btn.active {
+  background: linear-gradient(135deg, #ff7247, #3b82f6);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 20px rgba(242, 78, 30, 0.4);
+}
+
+.uiux-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.uiux-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.uiux-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(242, 78, 30, 0.5);
+  box-shadow: 0 8px 30px rgba(242, 78, 30, 0.2);
+}
+
+.uiux-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background: #08090e;
+}
+
+.uiux-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.uiux-card:hover .uiux-img {
+  transform: scale(1.08);
+}
+
+.uiux-badge-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(242, 78, 30, 0.4);
+  color: #ff7247;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.uiux-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 9, 14, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition-fast);
+  backdrop-filter: blur(4px);
+}
+
+.uiux-card:hover .uiux-overlay {
+  opacity: 1;
+}
+
+.uiux-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.uiux-category-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ff7247;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.uiux-title {
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+}
+
+.uiux-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
 .art-card {
   background: var(--bg-card);
   border: 1px solid var(--border-glass);
