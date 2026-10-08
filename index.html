@@ -330,7 +330,7 @@
           <div class="project-img-wrapper">
             <img src="assets/project_preview.jpg" alt="Aether Analytics Dashboard" class="project-img">
             <div class="project-overlay">
-              <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-title="Aether Analytics Real-Time Dashboard" data-demo-desc="Interactive real-time telemetry dashboard simulation featuring dark glassmorphic metric cards, active user counters, live latency trackers, and performance charts."><i class="fa-solid fa-chart-line"></i> Launch Live Demo</button>
               <a href="https://github.com/manavitiwari/2026portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Repository</a>
             </div>
           </div>
@@ -341,7 +341,7 @@
             <div class="tech-tags">
               <span class="tag">JavaScript</span>
               <span class="tag">Glassmorphism</span>
-              <span class="tag">Chart.js</span>
+              <span class="tag">Live Telemetry</span>
             </div>
           </div>
         </div>
@@ -955,8 +955,9 @@
           <div class="uiux-img-wrapper">
             <img src="assets/gym_uiux_priyank_design.jpg?v=2" alt="PulseFit Priyank Gym Mobile App UI/UX Design" class="uiux-img">
             <div class="uiux-badge-tag"><i class="fa-solid fa-mobile-screen"></i> Mobile UI/UX</div>
-            <div class="uiux-overlay">
-              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Full Case Study</span>
+            <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
+              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="gym" data-demo-title="PulseFit — Priyank's Gym & Fitness Mobile App Demo" data-demo-desc="Interactive live prototype for Priyank's customized fitness app featuring real-time telemetry, timer, calories counter, and set-rep checklist."><i class="fa-solid fa-play"></i> Launch Demo</button>
             </div>
           </div>
           <div class="uiux-body">
@@ -977,8 +978,9 @@
           <div class="uiux-img-wrapper">
             <img src="assets/uiux_design_system.jpg" alt="Aether Dark Glassmorphism UI/UX Design System" class="uiux-img">
             <div class="uiux-badge-tag"><i class="fa-solid fa-cubes"></i> Design System</div>
-            <div class="uiux-overlay">
-              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Full Case Study</span>
+            <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
+              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="telemetry" data-demo-title="Aether Dark Glassmorphism Design System Demo" data-demo-desc="Interactive component library and telemetry metrics dashboard prototype."><i class="fa-solid fa-play"></i> Launch Demo</button>
             </div>
           </div>
           <div class="uiux-body">
@@ -999,8 +1001,9 @@
           <div class="uiux-img-wrapper">
             <img src="assets/resin_art_framed.jpg?v=1" alt="THREAD & FRAME E-Commerce UI/UX Storefront" class="uiux-img">
             <div class="uiux-badge-tag"><i class="fa-solid fa-store"></i> E-Commerce UI</div>
-            <div class="uiux-overlay">
-              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Full Case Study</span>
+            <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
+              <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Store Demo</a>
             </div>
           </div>
           <div class="uiux-body">
@@ -1021,8 +1024,9 @@
           <div class="uiux-img-wrapper">
             <img src="assets/pencil_sketch_portrait.jpg" alt="HTML5 Digital Canvas Studio Tool Interface" class="uiux-img">
             <div class="uiux-badge-tag"><i class="fa-solid fa-paintbrush"></i> Creative Tool UI</div>
-            <div class="uiux-overlay">
-              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Full Case Study</span>
+            <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
+              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
+              <a href="#extracurricular" class="btn btn-secondary btn-sm"><i class="fa-solid fa-paintbrush"></i> Open Studio</a>
             </div>
           </div>
           <div class="uiux-body">
@@ -1108,6 +1112,32 @@
       </div>
     </div>
   </section>
+
+  <!-- Live Interactive Project Demo Modal -->
+  <div id="demoModal" class="art-modal">
+    <div class="art-modal-content" style="max-width: 950px;">
+      <button id="demoModalClose" class="art-modal-close" title="Close Demo"><i class="fa-solid fa-xmark"></i></button>
+      <div style="padding: 2.2rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase;"><i class="fa-solid fa-bolt"></i> Live Interactive Application Demo</div>
+            <h2 id="demoTitle" style="font-size: 1.5rem; font-family: var(--font-heading); margin-top: 0.3rem;">Aether Analytics Real-Time Dashboard</h2>
+          </div>
+          <span class="status-dot" style="background: var(--accent-cyan);"></span>
+        </div>
+
+        <!-- Interactive Dashboard Demo Simulator Container -->
+        <div id="demoSimulator" style="background: #08090e; border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+          <!-- Rendered by JS simulator -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <p id="demoDesc" style="color: var(--text-muted); font-size: 0.92rem; max-width: 650px; margin: 0;">Interactive real-time telemetry dashboard simulation featuring dark glassmorphic metric cards, active user counters, live latency trackers, and performance charts.</p>
+          <a href="https://github.com/manavitiwari/2026portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fa-brands fa-github"></i> Repository Source</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Artwork Lightbox Modal (Supports Single & Gallery Mode) -->
   <div id="artModal" class="art-modal">

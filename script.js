@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initArtFilters();
   initUiuxFilters();
   initArtModal();
+  initDemoModal();
   initProjectFilters();
   initScrollAnimations();
   initSkillBars();
@@ -349,6 +350,301 @@ function initArtModal() {
 
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.classList.remove('open');
+  });
+}
+
+/* --- Live Interactive Project Demo Modal Simulator --- */
+function initDemoModal() {
+  const demoModal = document.getElementById('demoModal');
+  const demoCloseBtn = document.getElementById('demoModalClose');
+  const openDemoBtns = document.querySelectorAll('.open-demo-btn');
+  const demoTitle = document.getElementById('demoTitle');
+  const demoDesc = document.getElementById('demoDesc');
+  const demoSimulator = document.getElementById('demoSimulator');
+
+  if (!demoModal || !demoSimulator) return;
+
+  function renderInteractiveGymApp() {
+    demoSimulator.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Gym App Header Bar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: linear-gradient(135deg, rgba(242, 78, 30, 0.15) 0%, rgba(15, 23, 42, 0.8) 100%); padding: 1rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid rgba(242, 78, 30, 0.3);">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #ff7247, #f24e1e); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 1.1rem;">P</div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #ff7247; text-transform: uppercase;">PULSEFIT MOBILE DASHBOARD</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Welcome back, Priyank! 💪</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(0,0,0,0.4); padding: 0.5rem 0.85rem; border-radius: 20px; border: 1px solid rgba(255,114,71,0.3);">
+            <i class="fa-solid fa-heart-pulse" style="color: #ff3b30; font-size: 1.1rem; animation: pulse 1.2s infinite;"></i>
+            <span style="font-family: var(--font-mono); font-weight: 700; color: #fff; font-size: 0.95rem;"><span id="gymHeartRate">142</span> BPM</span>
+          </div>
+        </div>
+
+        <!-- Live Workout Metrics Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(242, 78, 30, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">WORKOUT DURATION</div>
+            <div id="gymTimer" style="font-size: 1.4rem; font-weight: 700; color: #ff7247; margin: 0.25rem 0;">00:44:28</div>
+            <div style="font-size: 0.75rem; color: #00f5d4;"><i class="fa-solid fa-fire"></i> Chest & Triceps Day</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(242, 78, 30, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">CALORIES BURNED</div>
+            <div id="gymCalories" style="font-size: 1.4rem; font-weight: 700; color: #00f2fe; margin: 0.25rem 0;">548 kcal</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Target: 750 kcal</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(242, 78, 30, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">COMPLETED SETS</div>
+            <div id="gymSetsCount" style="font-size: 1.4rem; font-weight: 700; color: #00f5d4; margin: 0.25rem 0;">10 / 16</div>
+            <div style="font-size: 0.75rem; color: #ff7247;">62.5% Complete</div>
+          </div>
+        </div>
+
+        <!-- Interactive Workout Routine Checklist for Priyank -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 600; color: #fff;">
+            <span><i class="fa-solid fa-list-check" style="color: #ff7247; margin-right: 0.5rem;"></i> Priyank's Workout Routine Checklist (Click Items to Complete)</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">HYPERTROPHY MODE</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;" id="gymRoutineList">
+            <div class="gym-check-item completed" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,245,212,0.08); border: 1px solid rgba(0,245,212,0.3); padding: 0.75rem 1rem; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fa-solid fa-circle-check" style="color: #00f5d4; font-size: 1.1rem;"></i>
+                <div>
+                  <div style="font-weight: 600; font-size: 0.92rem; color: #fff; text-decoration: line-through; opacity: 0.85;">Barbell Flat Bench Press</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">4 Sets x 10 Reps • 85 kg (Completed)</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(0,245,212,0.2); color: #00f5d4; font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 12px;">Done</span>
+            </div>
+
+            <div class="gym-check-item completed" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,245,212,0.08); border: 1px solid rgba(0,245,212,0.3); padding: 0.75rem 1rem; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fa-solid fa-circle-check" style="color: #00f5d4; font-size: 1.1rem;"></i>
+                <div>
+                  <div style="font-weight: 600; font-size: 0.92rem; color: #fff; text-decoration: line-through; opacity: 0.85;">Incline Dumbbell Press</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">3 Sets x 12 Reps • 32 kg (Completed)</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(0,245,212,0.2); color: #00f5d4; font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 12px;">Done</span>
+            </div>
+
+            <div class="gym-check-item" style="display: flex; align-items: center; justify-content: space-between; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-glass); padding: 0.75rem 1rem; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fa-regular fa-circle" style="color: var(--text-muted); font-size: 1.1rem;"></i>
+                <div>
+                  <div style="font-weight: 600; font-size: 0.92rem; color: #fff;">Cable Chest Flyes & Pullovers</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">3 Sets x 15 Reps • 20 kg (Next Up)</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(255,114,71,0.2); color: #ff7247; font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 12px;">Pending</span>
+            </div>
+
+            <div class="gym-check-item" style="display: flex; align-items: center; justify-content: space-between; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-glass); padding: 0.75rem 1rem; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s ease;">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <i class="fa-regular fa-circle" style="color: var(--text-muted); font-size: 1.1rem;"></i>
+                <div>
+                  <div style="font-weight: 600; font-size: 0.92rem; color: #fff;">Tricep Skullcrushers & Dips</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">3 Sets x 15 Reps • Bodyweight</div>
+                </div>
+              </div>
+              <span class="badge" style="background: rgba(255,114,71,0.2); color: #ff7247; font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 12px;">Pending</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    // Heartbeat & timer simulator interval
+    const heartEl = document.getElementById('gymHeartRate');
+    const timerEl = document.getElementById('gymTimer');
+    const calEl = document.getElementById('gymCalories');
+    let seconds = 2668;
+
+    if (heartEl && timerEl) {
+      setInterval(() => {
+        if (!demoModal.classList.contains('open')) return;
+        const bpm = 138 + Math.floor(Math.random() * 8);
+        heartEl.textContent = bpm;
+
+        seconds++;
+        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const s = String(seconds % 60).padStart(2, '0');
+        timerEl.textContent = `00:${m}:${s}`;
+
+        if (seconds % 5 === 0 && calEl) {
+          const currentCal = parseInt(calEl.textContent) || 548;
+          calEl.textContent = `${currentCal + 1} kcal`;
+        }
+      }, 1000);
+    }
+
+    const checkItems = demoSimulator.querySelectorAll('.gym-check-item');
+    const setsCountEl = document.getElementById('gymSetsCount');
+
+    checkItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const icon = item.querySelector('i');
+        const title = item.querySelector('div > div:first-child');
+        const badge = item.querySelector('.badge');
+
+        if (item.classList.contains('completed')) {
+          item.classList.remove('completed');
+          item.style.background = 'rgba(15, 23, 42, 0.8)';
+          item.style.borderColor = 'var(--border-glass)';
+          icon.className = 'fa-regular fa-circle';
+          icon.style.color = 'var(--text-muted)';
+          title.style.textDecoration = 'none';
+          title.style.opacity = '1';
+          badge.style.background = 'rgba(255,114,71,0.2)';
+          badge.style.color = '#ff7247';
+          badge.textContent = 'Pending';
+        } else {
+          item.classList.add('completed');
+          item.style.background = 'rgba(0,245,212,0.08)';
+          item.style.borderColor = 'rgba(0,245,212,0.3)';
+          icon.className = 'fa-solid fa-circle-check';
+          icon.style.color = '#00f5d4';
+          title.style.textDecoration = 'line-through';
+          title.style.opacity = '0.85';
+          badge.style.background = 'rgba(0,245,212,0.2)';
+          badge.style.color = '#00f5d4';
+          badge.textContent = 'Done';
+        }
+
+        const totalCompleted = demoSimulator.querySelectorAll('.gym-check-item.completed').length;
+        if (setsCountEl) {
+          const completedSets = totalCompleted === 4 ? 16 : totalCompleted === 3 ? 13 : totalCompleted === 2 ? 10 : totalCompleted === 1 ? 4 : 0;
+          const percent = ((completedSets / 16) * 100).toFixed(1);
+          setsCountEl.textContent = `${completedSets} / 16`;
+          if (setsCountEl.nextElementSibling) {
+            setsCountEl.nextElementSibling.textContent = `${percent}% Complete`;
+          }
+        }
+      });
+    });
+  }
+
+  function renderInteractiveDashboard() {
+    demoSimulator.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Live Ticker & Filters Bar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: rgba(15, 23, 42, 0.8); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="status-dot" style="background: #00f2fe;"></span>
+            <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-main); font-weight: 600;">
+              Live Traffic: <span id="liveUserTicker" style="color: #00f2fe;">1,482</span> Active Visitors Online
+            </span>
+          </div>
+          <div class="demo-filter-group" style="display: flex; gap: 0.5rem;">
+            <button class="tool-btn active demo-time-btn" data-time="realtime">Real-Time</button>
+            <button class="tool-btn demo-time-btn" data-time="24h">24h Summary</button>
+            <button class="tool-btn demo-time-btn" data-time="7d">Weekly Peak</button>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">TOTAL REQUESTS</div>
+            <div id="statReq" style="font-size: 1.4rem; font-weight: 700; color: #fff; margin: 0.25rem 0;">4,829,102</div>
+            <div style="font-size: 0.75rem; color: #00f5d4;"><i class="fa-solid fa-arrow-trend-up"></i> +12.4% vs last hr</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">AVG API LATENCY</div>
+            <div id="statLat" style="font-size: 1.4rem; font-weight: 700; color: #00f2fe; margin: 0.25rem 0;">18.4 ms</div>
+            <div style="font-size: 0.75rem; color: #00f5d4;"><i class="fa-solid fa-check"></i> Optimal speed</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">CONVERSION RATE</div>
+            <div id="statConv" style="font-size: 1.4rem; font-weight: 700; color: #ff7247; margin: 0.25rem 0;">4.85%</div>
+            <div style="font-size: 0.75rem; color: #ff7247;"><i class="fa-solid fa-fire"></i> +2.1% funnel boost</div>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: var(--radius-sm);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">SYSTEM HEALTH</div>
+            <div id="statHealth" style="font-size: 1.4rem; font-weight: 700; color: #00f5d4; margin: 0.25rem 0;">99.98%</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">All nodes green</div>
+          </div>
+        </div>
+
+        <!-- Telemetry SVG Bar Visualizer -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); padding: 1.25rem; border-radius: var(--radius-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">
+            <span>LIVE THROUGHPUT SPECTRUM (MB/s)</span>
+            <span style="color: #00f2fe;"><i class="fa-solid fa-chart-simple"></i> Active Engine</span>
+          </div>
+          <div id="telemetryBars" style="display: flex; align-items: flex-end; gap: 8px; height: 110px; padding-top: 10px;">
+            ${[65, 40, 85, 30, 95, 70, 50, 90, 60, 100, 45, 80, 55, 75, 90, 60, 40, 85].map(val => `
+              <div class="telemetry-bar" style="flex: 1; height: ${val}%; background: linear-gradient(180deg, #00f2fe 0%, #3b82f6 100%); border-radius: 4px; transition: height 0.4s ease;"></div>
+            `).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    // Live Ticker Interval
+    const tickerEl = document.getElementById('liveUserTicker');
+    if (tickerEl) {
+      setInterval(() => {
+        if (!demoModal.classList.contains('open')) return;
+        const current = parseInt(tickerEl.textContent.replace(',', '')) || 1482;
+        const delta = Math.floor(Math.random() * 15) - 7;
+        tickerEl.textContent = (current + delta).toLocaleString();
+      }, 1800);
+    }
+
+    // Time Filter Interactive Button Handlers
+    const timeBtns = demoSimulator.querySelectorAll('.demo-time-btn');
+    const bars = demoSimulator.querySelectorAll('.telemetry-bar');
+
+    timeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        timeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        bars.forEach(bar => {
+          const randomH = Math.floor(Math.random() * 75) + 25;
+          bar.style.height = `${randomH}%`;
+        });
+      });
+    });
+  }
+
+  // Re-query dynamically to support elements added to DOM
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.open-demo-btn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const title = btn.getAttribute('data-demo-title') || 'Aether Analytics Real-Time Dashboard';
+    const desc = btn.getAttribute('data-demo-desc') || 'Interactive real-time telemetry dashboard simulation.';
+    const demoType = btn.getAttribute('data-demo-type') || 'telemetry';
+
+    if (demoTitle) demoTitle.textContent = title;
+    if (demoDesc) demoDesc.textContent = desc;
+
+    if (demoType === 'gym') {
+      renderInteractiveGymApp();
+    } else {
+      renderInteractiveDashboard();
+    }
+
+    demoModal.classList.add('open');
+  });
+
+  if (demoCloseBtn) {
+    demoCloseBtn.addEventListener('click', () => demoModal.classList.remove('open'));
+  }
+
+  demoModal.addEventListener('click', (e) => {
+    if (e.target === demoModal) demoModal.classList.remove('open');
   });
 }
 
