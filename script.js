@@ -616,27 +616,512 @@ function initDemoModal() {
     });
   }
 
-  // Re-query dynamically to support elements added to DOM
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.open-demo-btn');
-    if (!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
+  function renderInteractiveStoreCustomizer() {
+    let selectedProduct = 'Embroidered Denim Jacket';
+    let basePrice = 129;
+    let selectedColor = '#f59e0b';
+    let cartItems = 0;
 
-    const title = btn.getAttribute('data-demo-title') || 'Aether Analytics Real-Time Dashboard';
-    const desc = btn.getAttribute('data-demo-desc') || 'Interactive real-time telemetry dashboard simulation.';
-    const demoType = btn.getAttribute('data-demo-type') || 'telemetry';
+    demoSimulator.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Store Studio Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: rgba(15, 23, 42, 0.85); padding: 1rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid rgba(255, 114, 71, 0.3);">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #ff7247, #f24e1e); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 1.1rem;">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #ff7247; text-transform: uppercase;">THREAD & FRAME ATELIER</div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Interactive Artisanal Customizer Studio</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span id="storeCartBadge" style="background: rgba(0, 245, 212, 0.15); border: 1px solid rgba(0, 245, 212, 0.4); color: #00f5d4; font-size: 0.85rem; font-family: var(--font-mono); padding: 0.4rem 0.85rem; border-radius: 20px;">
+              <i class="fa-solid fa-cart-shopping"></i> Cart: <strong id="cartCountNum">0</strong> items
+            </span>
+            <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="font-size: 0.8rem; padding: 0.4rem 0.85rem;">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Full Store
+            </a>
+          </div>
+        </div>
 
+        <!-- Customizer Studio Work Area (2 Columns) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          
+          <!-- Left: Live Visual Product Preview Canvas -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 260px; position: relative; overflow: hidden;">
+            <div id="productVisualBox" style="width: 100%; max-width: 260px; height: 200px; border-radius: 12px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); border: 2px dashed #f59e0b; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+              <i id="productIcon" class="fa-solid fa-shirt" style="font-size: 3.5rem; color: #f59e0b; transition: all 0.3s ease; filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.4));"></i>
+              <div id="productMonogramBadge" style="margin-top: 0.85rem; background: rgba(0, 0, 0, 0.7); border: 1px solid #f59e0b; padding: 0.35rem 0.85rem; border-radius: 20px; font-family: var(--font-mono); font-size: 0.85rem; color: #fff; letter-spacing: 0.1em; font-weight: 700;">
+                ★ <span id="previewMonogramText">MT</span> ★
+              </div>
+              <div id="productNameLabel" style="margin-top: 0.45rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+                Embroidered Denim Jacket
+              </div>
+            </div>
+            <div style="margin-top: 0.85rem; font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); text-align: center;">
+              <i class="fa-solid fa-sparkles" style="color: #00f2fe;"></i> Real-time dynamic stitch preview
+            </div>
+          </div>
+
+          <!-- Right: Interactive Options Configurator -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+            
+            <!-- Product Selector -->
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 0.4rem;">1. CHOOSE ARTISANAL BASE</label>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="productBtnGroup">
+                <button class="tool-btn active store-prod-btn" data-prod="Embroidered Denim Jacket" data-icon="fa-shirt" data-price="129" style="font-size: 0.78rem;">Denim Jacket ($129)</button>
+                <button class="tool-btn store-prod-btn" data-prod="Botanical Linen Canvas" data-icon="fa-image" data-price="85" style="font-size: 0.78rem;">Botanical Canvas ($85)</button>
+                <button class="tool-btn store-prod-btn" data-prod="Floral Thread Hoop Art" data-icon="fa-circle-dot" data-price="65" style="font-size: 0.78rem;">Thread Hoop ($65)</button>
+              </div>
+            </div>
+
+            <!-- Thread Color Selector -->
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 0.4rem;">2. THREAD COLOR PALETTE</label>
+              <div style="display: flex; gap: 0.6rem; align-items: center;" id="storeColorSwatches">
+                <div class="swatch active store-swatch" data-color="#f59e0b" style="background: #f59e0b; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; outline: 2px solid #fff;" title="Gold Thread"></div>
+                <div class="swatch store-swatch" data-color="#ff7247" style="background: #ff7247; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;" title="Coral Thread"></div>
+                <div class="swatch store-swatch" data-color="#00f2fe" style="background: #00f2fe; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;" title="Cyan Thread"></div>
+                <div class="swatch store-swatch" data-color="#10b981" style="background: #10b981; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;" title="Emerald Thread"></div>
+                <div class="swatch store-swatch" data-color="#a855f7" style="background: #a855f7; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;" title="Lavender Thread"></div>
+              </div>
+            </div>
+
+            <!-- Monogram Custom Text -->
+            <div>
+              <label style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 0.4rem;">3. EMBROIDERED MONOGRAM TEXT</label>
+              <input type="text" id="storeMonogramInput" value="MT" maxlength="12" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 0.5rem 0.85rem; color: #fff; font-family: var(--font-mono); width: 100%; outline: none;" placeholder="Enter initials (e.g. MT)">
+            </div>
+
+            <!-- Price & Add to Cart Action -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border-glass);">
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">CUSTOMIZED TOTAL</div>
+                <div id="storePriceDisplay" style="font-size: 1.35rem; font-weight: 700; color: #00f5d4;">$129.00</div>
+              </div>
+              <button id="storeAddToCartBtn" class="btn btn-primary btn-sm" style="font-size: 0.85rem; padding: 0.6rem 1.1rem;">
+                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+    // Interactivity
+    const prodBtns = demoSimulator.querySelectorAll('.store-prod-btn');
+    const colorSwatches = demoSimulator.querySelectorAll('.store-swatch');
+    const monoInput = document.getElementById('storeMonogramInput');
+    const previewMonoText = document.getElementById('previewMonogramText');
+    const productVisualBox = document.getElementById('productVisualBox');
+    const productIcon = document.getElementById('productIcon');
+    const productNameLabel = document.getElementById('productNameLabel');
+    const priceDisplay = document.getElementById('storePriceDisplay');
+    const addToCartBtn = document.getElementById('storeAddToCartBtn');
+    const cartCountNum = document.getElementById('cartCountNum');
+
+    // Product switcher
+    prodBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        prodBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedProduct = btn.getAttribute('data-prod');
+        basePrice = parseInt(btn.getAttribute('data-price')) || 129;
+        const iconClass = btn.getAttribute('data-icon');
+
+        if (productIcon) productIcon.className = `fa-solid ${iconClass}`;
+        if (productNameLabel) productNameLabel.textContent = selectedProduct;
+        if (priceDisplay) priceDisplay.textContent = `$${basePrice}.00`;
+      });
+    });
+
+    // Color switcher
+    colorSwatches.forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        colorSwatches.forEach(s => s.style.outline = 'none');
+        swatch.style.outline = '2px solid #fff';
+        selectedColor = swatch.getAttribute('data-color');
+
+        if (productVisualBox) productVisualBox.style.borderColor = selectedColor;
+        if (productIcon) {
+          productIcon.style.color = selectedColor;
+          productIcon.style.filter = `drop-shadow(0 0 14px ${selectedColor}66)`;
+        }
+        const monoBadge = document.getElementById('productMonogramBadge');
+        if (monoBadge) monoBadge.style.borderColor = selectedColor;
+      });
+    });
+
+    // Monogram input live reflection
+    if (monoInput && previewMonoText) {
+      monoInput.addEventListener('input', (e) => {
+        previewMonoText.textContent = e.target.value.toUpperCase() || 'MT';
+      });
+    }
+
+    // Add to cart click
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', () => {
+        cartItems++;
+        if (cartCountNum) cartCountNum.textContent = cartItems;
+        addToCartBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added!';
+        addToCartBtn.style.background = '#00f5d4';
+        addToCartBtn.style.color = '#000';
+        setTimeout(() => {
+          addToCartBtn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> Add to Cart';
+          addToCartBtn.style.background = '';
+          addToCartBtn.style.color = '';
+        }, 1200);
+      });
+    }
+  }
+
+  function renderInteractiveCanvasStudio() {
+    demoSimulator.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        
+        <!-- Canvas Studio Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; background: rgba(15, 23, 42, 0.85); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #00f2fe, #3b82f6); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff;">
+              <i class="fa-solid fa-paint-brush"></i>
+            </div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #00f2fe; text-transform: uppercase;">HTML5 CANVAS ENGINE</div>
+              <div style="font-size: 1rem; font-weight: 700; color: #fff;">Live Interactive Digital Sketch Studio</div>
+            </div>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono);">
+            <i class="fa-solid fa-hand-pointer" style="color: #00f5d4;"></i> Click or drag below to draw live!
+          </div>
+        </div>
+
+        <!-- Canvas Controls Toolbar -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; background: rgba(15, 23, 42, 0.6); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-glass);">
+          
+          <!-- Color Swatches -->
+          <div style="display: flex; align-items: center; gap: 0.5rem;" id="modalCanvasColors">
+            <div class="swatch active modal-color" data-color="#00f2fe" style="background: #00f2fe; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; outline: 2px solid #fff;" title="Cyan"></div>
+            <div class="swatch modal-color" data-color="#9d4edd" style="background: #9d4edd; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;" title="Purple"></div>
+            <div class="swatch modal-color" data-color="#ff2a85" style="background: #ff2a85; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;" title="Pink"></div>
+            <div class="swatch modal-color" data-color="#ffb703" style="background: #ffb703; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;" title="Gold"></div>
+            <div class="swatch modal-color" data-color="#00f5d4" style="background: #00f5d4; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;" title="Green"></div>
+            <div class="swatch modal-color" data-color="#ffffff" style="background: #ffffff; width: 24px; height: 24px; border-radius: 50%; cursor: pointer;" title="White"></div>
+          </div>
+
+          <!-- Brush Size Slider -->
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-circle" style="font-size: 0.5rem; color: var(--text-muted);"></i>
+            <input type="range" id="modalBrushSize" min="1" max="25" value="4" style="width: 85px; accent-color: #00f2fe;">
+            <span id="modalBrushVal" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); min-width: 30px;">4px</span>
+          </div>
+
+          <!-- Actions -->
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="modalToolBrush" class="tool-btn active" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;"><i class="fa-solid fa-pen"></i> Brush</button>
+            <button id="modalToolEraser" class="tool-btn" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;"><i class="fa-solid fa-eraser"></i> Eraser</button>
+            <button id="modalClearCanvas" class="tool-btn" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;"><i class="fa-solid fa-rotate-left"></i> Clear</button>
+            <button id="modalSaveCanvas" class="tool-btn" style="color: #00f2fe; font-size: 0.75rem; padding: 0.35rem 0.65rem;"><i class="fa-solid fa-download"></i> Save PNG</button>
+          </div>
+        </div>
+
+        <!-- Real Canvas Frame -->
+        <div style="width: 100%; height: 260px; background: #07090e; border: 1px solid var(--border-glass); border-radius: var(--radius-sm); position: relative; overflow: hidden; touch-action: none;">
+          <canvas id="modalDrawingCanvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
+        </div>
+
+      </div>
+    `;
+
+    setTimeout(() => {
+      const canvas = document.getElementById('modalDrawingCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width || 750;
+      canvas.height = rect.height || 260;
+
+      let isDrawing = false;
+      let currentColor = '#00f2fe';
+      let currentSize = 4;
+      let currentTool = 'brush';
+
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      function getPos(e) {
+        const cRect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: (clientX - cRect.left) * (canvas.width / cRect.width),
+          y: (clientY - cRect.top) * (canvas.height / cRect.height)
+        };
+      }
+
+      function startDraw(e) {
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
+
+      function draw(e) {
+        if (!isDrawing) return;
+        if (e.touches) e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineWidth = currentSize;
+        ctx.strokeStyle = currentTool === 'eraser' ? '#07090e' : currentColor;
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+      }
+
+      function stopDraw() {
+        if (!isDrawing) return;
+        isDrawing = false;
+        ctx.closePath();
+      }
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+      canvas.addEventListener('mouseleave', stopDraw);
+
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', draw, { passive: false });
+      canvas.addEventListener('touchend', stopDraw);
+
+      // Color Swatches
+      const colorSwatches = demoSimulator.querySelectorAll('.modal-color');
+      colorSwatches.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          colorSwatches.forEach(s => s.style.outline = 'none');
+          swatch.style.outline = '2px solid #fff';
+          currentColor = swatch.getAttribute('data-color');
+          currentTool = 'brush';
+          document.getElementById('modalToolBrush')?.classList.add('active');
+          document.getElementById('modalToolEraser')?.classList.remove('active');
+        });
+      });
+
+      // Brush slider
+      const brushSlider = document.getElementById('modalBrushSize');
+      const brushVal = document.getElementById('modalBrushVal');
+      if (brushSlider && brushVal) {
+        brushSlider.addEventListener('input', (e) => {
+          currentSize = parseInt(e.target.value) || 4;
+          brushVal.textContent = `${currentSize}px`;
+        });
+      }
+
+      // Tools
+      const brushBtn = document.getElementById('modalToolBrush');
+      const eraserBtn = document.getElementById('modalToolEraser');
+      const clearBtn = document.getElementById('modalClearCanvas');
+      const saveBtn = document.getElementById('modalSaveCanvas');
+
+      if (brushBtn) {
+        brushBtn.addEventListener('click', () => {
+          currentTool = 'brush';
+          brushBtn.classList.add('active');
+          eraserBtn?.classList.remove('active');
+        });
+      }
+
+      if (eraserBtn) {
+        eraserBtn.addEventListener('click', () => {
+          currentTool = 'eraser';
+          eraserBtn.classList.add('active');
+          brushBtn?.classList.remove('active');
+        });
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+      }
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          const link = document.createElement('a');
+          link.download = `manavi-sketch-${Date.now()}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+      }
+    }, 50);
+  }
+
+  function renderInteractiveDesignSystem() {
+    demoSimulator.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Design System Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; background: rgba(15, 23, 42, 0.85); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); border: 1px solid rgba(0, 242, 254, 0.3);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #00f2fe, #3b82f6); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff;">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #00f2fe; text-transform: uppercase;">FIGMA & CODE UI KIT</div>
+              <div style="font-size: 1rem; font-weight: 700; color: #fff;">Aether Dark Glassmorphism Design System Tokens</div>
+            </div>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #00f5d4; background: rgba(0,245,212,0.1); padding: 0.35rem 0.75rem; border-radius: 12px; border: 1px solid rgba(0,245,212,0.3);">
+            <i class="fa-solid fa-circle-check"></i> WCAG AAA Accessible
+          </span>
+        </div>
+
+        <!-- Tokens & Interactive Components Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+          
+          <!-- Color Tokens Palette -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 1rem;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 0.75rem;">BRAND COLOR TOKENS</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 0.4rem 0.75rem; border-radius: 6px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #090d16; border: 1px solid #444;"></span>
+                  <span style="font-size: 0.8rem; font-family: var(--font-mono);">Obsidian Canvas</span>
+                </div>
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">#090D16</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 0.4rem 0.75rem; border-radius: 6px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #00f2fe;"></span>
+                  <span style="font-size: 0.8rem; font-family: var(--font-mono);">Sapphire Cyan</span>
+                </div>
+                <span style="font-size: 0.75rem; color: #00f2fe; font-family: var(--font-mono);">#00F2FE</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 0.4rem 0.75rem; border-radius: 6px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #ff7247;"></span>
+                  <span style="font-size: 0.8rem; font-family: var(--font-mono);">Flame Orange</span>
+                </div>
+                <span style="font-size: 0.75rem; color: #ff7247; font-family: var(--font-mono);">#FF7247</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive UI Kit Controls -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">INTERACTIVE CONTROLS</div>
+            
+            <!-- Interactive Switch -->
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.85rem; color: #fff;">Glass Toggle:</span>
+              <button id="dsToggleBtn" style="background: rgba(0, 242, 254, 0.2); border: 1px solid #00f2fe; color: #00f2fe; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.75rem; font-family: var(--font-mono); cursor: pointer; transition: all 0.2s ease;">
+                <i class="fa-solid fa-power-off"></i> ACTIVE
+              </button>
+            </div>
+
+            <!-- Interactive Slider -->
+            <div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.3rem;">
+                <span style="color: var(--text-muted);">Blur Intensity:</span>
+                <span id="dsBlurVal" style="color: #00f2fe; font-family: var(--font-mono);">16px</span>
+              </div>
+              <input type="range" id="dsBlurSlider" min="0" max="40" value="16" style="width: 100%; accent-color: #00f2fe;">
+            </div>
+
+            <!-- Button Variants Preview -->
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem;">
+              <button class="btn btn-primary btn-sm" style="font-size: 0.75rem; padding: 0.35rem 0.7rem;">Primary</button>
+              <button class="btn btn-secondary btn-sm" style="font-size: 0.75rem; padding: 0.35rem 0.7rem;">Outline</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+    const toggleBtn = document.getElementById('dsToggleBtn');
+    let isActive = true;
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        isActive = !isActive;
+        if (isActive) {
+          toggleBtn.style.background = 'rgba(0, 242, 254, 0.2)';
+          toggleBtn.style.borderColor = '#00f2fe';
+          toggleBtn.style.color = '#00f2fe';
+          toggleBtn.innerHTML = '<i class="fa-solid fa-power-off"></i> ACTIVE';
+        } else {
+          toggleBtn.style.background = 'rgba(255, 255, 255, 0.05)';
+          toggleBtn.style.borderColor = 'var(--border-glass)';
+          toggleBtn.style.color = 'var(--text-muted)';
+          toggleBtn.innerHTML = '<i class="fa-solid fa-power-off"></i> STANDBY';
+        }
+      });
+    }
+
+    const blurSlider = document.getElementById('dsBlurSlider');
+    const blurVal = document.getElementById('dsBlurVal');
+    if (blurSlider && blurVal) {
+      blurSlider.addEventListener('input', (e) => {
+        blurVal.textContent = `${e.target.value}px`;
+      });
+    }
+  }
+
+  function openDemoModalWithType(demoType, title, desc) {
     if (demoTitle) demoTitle.textContent = title;
     if (demoDesc) demoDesc.textContent = desc;
 
     if (demoType === 'gym') {
       renderInteractiveGymApp();
+    } else if (demoType === 'store') {
+      renderInteractiveStoreCustomizer();
+    } else if (demoType === 'canvas') {
+      renderInteractiveCanvasStudio();
+    } else if (demoType === 'system') {
+      renderInteractiveDesignSystem();
     } else {
       renderInteractiveDashboard();
     }
 
     demoModal.classList.add('open');
+  }
+
+  // Universal Click Handler: open-demo-btn and project-card clicks
+  document.addEventListener('click', (e) => {
+    // If clicked on an external link or repository anchor, let normal navigation occur
+    if (e.target.closest('a')) return;
+
+    // Direct demo button click
+    const btn = e.target.closest('.open-demo-btn');
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const title = btn.getAttribute('data-demo-title') || 'Project Interactive Demo';
+      const desc = btn.getAttribute('data-demo-desc') || 'Explore the live working interactive demonstration.';
+      const demoType = btn.getAttribute('data-demo-type') || 'telemetry';
+
+      openDemoModalWithType(demoType, title, desc);
+      return;
+    }
+
+    // Clicking anywhere on a project card triggers its live demo
+    const card = e.target.closest('.project-card');
+    if (card) {
+      const demoBtn = card.querySelector('.open-demo-btn');
+      const demoType = card.getAttribute('data-demo-type') || (demoBtn ? demoBtn.getAttribute('data-demo-type') : 'telemetry');
+      const title = (demoBtn ? demoBtn.getAttribute('data-demo-title') : null) || card.querySelector('.project-title')?.textContent || 'Project Demo';
+      const desc = (demoBtn ? demoBtn.getAttribute('data-demo-desc') : null) || card.querySelector('.project-desc')?.textContent || 'Explore the live working interactive demonstration.';
+
+      e.preventDefault();
+      openDemoModalWithType(demoType, title, desc);
+    }
   });
 
   if (demoCloseBtn) {
@@ -962,9 +1447,10 @@ function initProjectFilters() {
       const filterValue = btn.getAttribute('data-filter');
 
       projectCards.forEach(card => {
-        const category = card.getAttribute('data-category');
+        const category = card.getAttribute('data-category') || '';
+        const categories = category.toLowerCase().split(/\s+/);
 
-        if (filterValue === 'all' || category === filterValue) {
+        if (filterValue === 'all' || categories.includes(filterValue.toLowerCase())) {
           card.style.display = 'flex';
           setTimeout(() => {
             card.style.opacity = '1';

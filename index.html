@@ -145,7 +145,7 @@
           
           <div class="bio-highlight">
             <i class="fa-solid fa-heart" style="color: var(--accent-pink); margin-right: 0.5rem;"></i>
-            <strong>Extra-Curricular Hobbies:</strong> In my free time outside of coding, <em>I love to draw pencil & charcoal sketches, stitch hand embroidery, create Mehndi henna designs, and pour resin art 🎨🧵🌿💎!</em>
+            <strong>Extra-Curricular Hobbies:</strong> In my free time outside of coding, <em>I love to draw pencil & charcoal sketches, stitch hand embroidery, and create Mehndi henna designs 🎨🧵🌿!</em>
           </div>
         </div>
 
@@ -306,18 +306,18 @@
 
       <div class="projects-grid">
         <!-- Project Card 1: Commercial E-Commerce Website -->
-        <div class="project-card" data-category="web">
+        <div class="project-card" data-category="web opensource" data-demo-type="store">
           <div class="project-img-wrapper">
-            <img src="assets/resin_art_framed.jpg?v=1" alt="THREAD & FRAME Commercial E-Commerce Website" class="project-img">
+            <img src="assets/hand_embroidery.jpg" alt="THREAD & FRAME Commercial E-Commerce Website" class="project-img">
             <div class="project-overlay">
-              <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Store Demo</a>
-              <a href="https://github.com/manavitiwari/commercial-website" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Repository</a>
+              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-type="store" data-demo-title="THREAD & FRAME — Artisanal Store Customizer Demo" data-demo-desc="Interactive e-commerce product customizer simulator featuring dynamic thread color selection, live monogram preview, real-time pricing, and cart checkout."><i class="fa-solid fa-wand-magic-sparkles"></i> Try Customizer Demo</button>
+              <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Store</a>
             </div>
           </div>
           <div class="project-body">
             <span class="project-category">Commercial E-Commerce</span>
             <h3 class="project-title">THREAD & FRAME Atelier</h3>
-            <p class="project-desc">Full-featured artisanal e-commerce web app & interactive customizer for hand-embroidered denim, resin preservation, sketch commissions, and handcrafted decor.</p>
+            <p class="project-desc">Full-featured artisanal e-commerce web app & interactive customizer for hand-embroidered denim, sketch commissions, and handcrafted decor.</p>
             <div class="tech-tags">
               <span class="tag">HTML5 / Vanilla CSS3</span>
               <span class="tag">JavaScript ES6</span>
@@ -326,11 +326,13 @@
             </div>
           </div>
         </div>
-        <div class="project-card" data-category="web">
+
+        <!-- Project Card 2: Aether Analytics Dashboard -->
+        <div class="project-card" data-category="web opensource" data-demo-type="telemetry">
           <div class="project-img-wrapper">
             <img src="assets/project_preview.jpg" alt="Aether Analytics Dashboard" class="project-img">
             <div class="project-overlay">
-              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-title="Aether Analytics Real-Time Dashboard" data-demo-desc="Interactive real-time telemetry dashboard simulation featuring dark glassmorphic metric cards, active user counters, live latency trackers, and performance charts."><i class="fa-solid fa-chart-line"></i> Launch Live Demo</button>
+              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-type="telemetry" data-demo-title="Aether Analytics Real-Time Dashboard" data-demo-desc="Interactive real-time telemetry dashboard simulation featuring dark glassmorphic metric cards, active user counters, live latency trackers, and performance charts."><i class="fa-solid fa-chart-line"></i> Launch Live Demo</button>
               <a href="https://github.com/manavitiwari/2026portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Repository</a>
             </div>
           </div>
@@ -346,12 +348,12 @@
           </div>
         </div>
 
-        <!-- Project Card 2 -->
-        <div class="project-card" data-category="creative">
+        <!-- Project Card 3: HTML5 Digital Canvas Studio -->
+        <div class="project-card" data-category="creative opensource web" data-demo-type="canvas">
           <div class="project-img-wrapper">
             <img src="assets/pencil_sketch_portrait.jpg" alt="HTML5 Canvas Art Studio" class="project-img">
             <div class="project-overlay">
-              <a href="#extracurricular" class="btn btn-primary btn-sm"><i class="fa-solid fa-paint-brush"></i> Open Studio</a>
+              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-type="canvas" data-demo-title="HTML5 Digital Canvas Studio — Live Drawing Pad" data-demo-desc="Interactive digital sketching suite with custom brush dynamic stroke engine, neon color picker, eraser mode, and instant PNG artwork download."><i class="fa-solid fa-paint-brush"></i> Launch Canvas Demo</button>
               <a href="https://github.com/manavitiwari/2026portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Repository</a>
             </div>
           </div>
@@ -367,23 +369,24 @@
           </div>
         </div>
 
-        <!-- Project Card 3 -->
-        <div class="project-card" data-category="creative">
+        <!-- Project Card 4: PulseFit Smart Gym & Workout Tracker -->
+        <div class="project-card" data-category="web creative opensource" data-demo-type="gym">
           <div class="project-img-wrapper">
-            <img src="assets/sketch_glasses_raw.jpg" alt="Canvas Sketchbook Studio" class="project-img">
+            <img src="assets/gym_uiux_priyank_design.jpg" alt="PulseFit Priyank Gym & Fitness Mobile Dashboard" class="project-img">
             <div class="project-overlay">
-              <a href="#extracurricular" class="btn btn-primary btn-sm"><i class="fa-solid fa-paint-brush"></i> Draw Now</a>
+              <button class="btn btn-primary btn-sm open-demo-btn" data-demo-type="gym" data-demo-title="PulseFit — Priyank's Gym & Fitness Interactive App Demo" data-demo-desc="Interactive live prototype for Priyank's customized fitness app featuring real-time telemetry, timer, calories counter, and set-rep checklist."><i class="fa-solid fa-heart-pulse"></i> Launch Gym Demo</button>
               <a href="https://github.com/manavitiwari/2026portfolio" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-brands fa-github"></i> Repository</a>
             </div>
           </div>
           <div class="project-body">
-            <span class="project-category">Creative & Art</span>
-            <h3 class="project-title">Canvas Sketchbook Studio</h3>
-            <p class="project-desc">Digital drawing workspace with neon color palettes, custom brush pressure size controls, eraser, and PNG export capabilities.</p>
+            <span class="project-category">Mobile & Fitness App</span>
+            <h3 class="project-title">PulseFit — Smart Gym & Workout Tracker</h3>
+            <p class="project-desc">Interactive mobile fitness application featuring personalized 'Welcome Priyank' workout dashboard, live telemetry, pulsing heart rate monitor, and set-rep checklist tracking.</p>
             <div class="tech-tags">
-              <span class="tag">HTML5 Canvas</span>
-              <span class="tag">Drawing API</span>
-              <span class="tag">Digital Art</span>
+              <span class="tag">JavaScript ES6</span>
+              <span class="tag">Live Telemetry</span>
+              <span class="tag">Priyank Fitness UX</span>
+              <span class="tag">Interactive Tracker</span>
             </div>
           </div>
         </div>
@@ -668,7 +671,7 @@
       <div class="section-header">
         <div class="section-badge"><i class="fa-solid fa-palette"></i> Extra-Curricular Activities</div>
         <h2 class="section-title">My Original <span class="gradient-craft">Camera Sketches</span></h2>
-        <p class="section-desc">Outside of software engineering, I love drawing pencil & charcoal sketches, stitching hand embroidery, creating Mehndi art, and pouring resin craft.</p>
+        <p class="section-desc">Outside of software engineering, I love drawing pencil & charcoal sketches, stitching hand embroidery, and creating Mehndi art.</p>
       </div>
 
       <!-- Category Subnav Filter Tabs -->
@@ -677,7 +680,6 @@
         <button class="art-tab-btn" data-art-filter="sketch"><i class="fa-solid fa-pencil"></i> Manavi's Sketches</button>
         <button class="art-tab-btn" data-art-filter="embroidery"><i class="fa-solid fa-scissors"></i> Hand Embroidery</button>
         <button class="art-tab-btn" data-art-filter="mehndi"><i class="fa-solid fa-spa"></i> Mehndi Art</button>
-        <button class="art-tab-btn" data-art-filter="resin"><i class="fa-solid fa-gem"></i> Resin Art</button>
       </div>
 
       <!-- Creative Arts & Manavi's Unedited Original Camera Sketches Grid -->
@@ -742,26 +744,6 @@
               <span class="tag">Mehndi Design</span>
               <span class="tag">Henna Art</span>
               <span class="tag">Mandala</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 7. Resin Art Card (Original Framed Photo) -->
-        <div class="art-card" data-art-category="resin" data-img="assets/resin_art_framed.jpg?v=1" data-title="Lord Ganesha Handcrafted Resin Canvas Art" data-category-name="Manavi Original Resin Art" data-desc="Framed original photo of custom 3D Lord Ganesha resin sculpture art on canvas with lotus petals and stone embellishments, signed Manavi.">
-          <div class="art-img-wrapper">
-            <img src="assets/resin_art_framed.jpg?v=1" alt="Lord Ganesha Resin Art Original Photo by Manavi" class="art-img">
-            <div class="art-overlay">
-              <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> View Resin Art</span>
-            </div>
-          </div>
-          <div class="art-body">
-            <span class="art-category-label"><i class="fa-solid fa-gem"></i> Resin Art</span>
-            <h3 class="art-title">Lord Ganesha Handcrafted Resin Canvas Art</h3>
-            <p class="art-desc">Framed original photo of custom 3D Lord Ganesha resin & clay art on canvas, signed Manavi.</p>
-            <div class="tech-tags">
-              <span class="tag">Resin Art</span>
-              <span class="tag">Ganesha Canvas</span>
-              <span class="tag">Signed Original</span>
             </div>
           </div>
         </div>
@@ -833,7 +815,7 @@
         <article class="glass-card blog-card">
           <div class="blog-date"><i class="fa-regular fa-calendar"></i> August 2026 • 5 min read</div>
           <h3 class="blog-title">Building Interactive Product Customizers in Vanilla JavaScript</h3>
-          <p class="blog-excerpt">How we architected a lightweight, zero-dependency canvas customizer for denim embroidery and resin preservation e-commerce web apps.</p>
+          <p class="blog-excerpt">How we architected a lightweight, zero-dependency canvas customizer for denim embroidery and custom commissions in e-commerce web apps.</p>
           <div class="blog-footer">
             <span class="tag">JavaScript</span>
             <span class="tag">Frontend Architecture</span>
@@ -980,7 +962,7 @@
             <div class="uiux-badge-tag"><i class="fa-solid fa-cubes"></i> Design System</div>
             <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
               <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
-              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="telemetry" data-demo-title="Aether Dark Glassmorphism Design System Demo" data-demo-desc="Interactive component library and telemetry metrics dashboard prototype."><i class="fa-solid fa-play"></i> Launch Demo</button>
+              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="system" data-demo-title="Aether Dark Glassmorphism Design System Demo" data-demo-desc="Interactive component library and design system UI kit explorer."><i class="fa-solid fa-play"></i> Launch Demo</button>
             </div>
           </div>
           <div class="uiux-body">
@@ -997,13 +979,14 @@
         </div>
 
         <!-- 3. THREAD & FRAME Atelier E-Commerce UI/UX Storefront -->
-        <div class="uiux-card art-card" data-uiux-category="web" data-img="assets/resin_art_framed.jpg?v=1" data-title="THREAD & FRAME Atelier — E-Commerce Customizer UI/UX" data-category-name="E-Commerce Web UI/UX" data-desc="User-centric e-commerce UI/UX experience for an artisanal customizer storefront, featuring custom canvas customizer controls, product filtering, shopping cart drawer, and checkout micro-interactions.">
+        <div class="uiux-card art-card" data-uiux-category="web" data-img="assets/hand_embroidery.jpg" data-title="THREAD & FRAME Atelier — E-Commerce Customizer UI/UX" data-category-name="E-Commerce Web UI/UX" data-desc="User-centric e-commerce UI/UX experience for an artisanal customizer storefront, featuring custom canvas customizer controls, product filtering, shopping cart drawer, and checkout micro-interactions.">
           <div class="uiux-img-wrapper">
-            <img src="assets/resin_art_framed.jpg?v=1" alt="THREAD & FRAME E-Commerce UI/UX Storefront" class="uiux-img">
+            <img src="assets/hand_embroidery.jpg" alt="THREAD & FRAME E-Commerce UI/UX Storefront" class="uiux-img">
             <div class="uiux-badge-tag"><i class="fa-solid fa-store"></i> E-Commerce UI</div>
             <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
               <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
-              <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Store Demo</a>
+              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="store" data-demo-title="THREAD & FRAME — Artisanal Store Customizer Demo" data-demo-desc="Interactive e-commerce product customizer simulator featuring dynamic thread color selection, live monogram preview, real-time pricing, and cart checkout."><i class="fa-solid fa-wand-magic-sparkles"></i> Try Demo</button>
+              <a href="https://manavitiwari.github.io/commercial-website/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-up-right-from-square"></i> Store</a>
             </div>
           </div>
           <div class="uiux-body">
@@ -1026,7 +1009,7 @@
             <div class="uiux-badge-tag"><i class="fa-solid fa-paintbrush"></i> Creative Tool UI</div>
             <div class="uiux-overlay" style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;">
               <span class="btn btn-primary btn-sm"><i class="fa-solid fa-expand"></i> Case Study</span>
-              <a href="#extracurricular" class="btn btn-secondary btn-sm"><i class="fa-solid fa-paintbrush"></i> Open Studio</a>
+              <button class="btn btn-secondary btn-sm open-demo-btn" data-demo-type="canvas" data-demo-title="HTML5 Digital Canvas Studio — Live Drawing Pad" data-demo-desc="Interactive digital sketching suite with custom brush dynamic stroke engine, neon color picker, eraser mode, and instant PNG artwork download."><i class="fa-solid fa-paint-brush"></i> Launch Demo</button>
             </div>
           </div>
           <div class="uiux-body">
